@@ -2,6 +2,7 @@ package com.learnreactivespring.learnreactivespring.fluxandmonoplayground;
 
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 public class FluxAndMonoTest {
@@ -51,6 +52,24 @@ public class FluxAndMonoTest {
 //                .expectErrorMessage("Exception Occurred")
                 .expectError(RuntimeException.class)
                 .verify() // expectError(), expectErrorMessage()에서 호출됐음. expectNext()에서는 안나옴
+        ;
+    }
+
+    @Test
+    void monoTest() {
+        Mono<String> stringMono = Mono.just("Spring");
+
+        StepVerifier.create(stringMono.log())
+                .expectNext("Spring")
+                .verifyComplete()
+                ;
+    }
+
+    @Test
+    void monoTest_Error() {
+        StepVerifier.create(Mono.error(new RuntimeException("Exception Occurred")))
+                .expectError(RuntimeException.class)
+                .verify()
         ;
     }
 }
